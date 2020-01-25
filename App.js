@@ -1,113 +1,36 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Button } from 'react-native';
-import { Buffer } from 'buffer';
-import { PermissionsAndroid } from 'react-native';
-import { AudioPlayer } from 'react-native-audio-player-recorder';
-import AudioRecord from 'react-native-audio-record';
+import React from 'react';
+import CameraScreen from './components/CameraScreen';
+import CreateAccount from './components/CreateAccount.js'
+import { StyleSheet, Text, View, Button } from 'react-native';
 
-export default class App extends Component {
-  sound = null;
-  state = {
-    audioFile: '',
-    recording: false,
-    loaded: false,
-    paused: true
-  };
 
-  async componentDidMount() {
-    await this.checkPermission();
-    this.initAudioRecord();
-    this.initAudioPlayer();
-  }
-
-  checkPermission = async () => {
-    const p = await PermissionsAndroid.check('microphone');
-    console.log('permission check', p);
-    if (p === 'authorized') return;
-    return this.requestPermission();
-  };
-
-  requestPermission = async () => {
-    const p = await PermissionsAndroid.request('microphone');
-    console.log('permission request', p);
-  };
-
-  initAudioRecord = () => {
-    const options = {
-      sampleRate: 16000,
-      channels: 1,
-      bitsPerSample: 16,
-      wavFile: 'test.wav'
-    };
-
-    AudioRecord.init(options);
-
-    AudioRecord.on('data', data => {
-      const chunk = Buffer.from(data, 'base64');
-      console.log('chunk size', chunk.byteLength);
-      // do something with audio chunk
-    });
-  };
-
-  initAudioPlayer = () => {
-    AudioPlayer.onFinished = () => {
-      console.log('finished playback');
-      this.setState({ paused: true, loaded: false });
-    };
-    AudioPlayer.setFinishedSubscription();
-
-    AudioPlayer.onProgress = data => {
-      console.log('progress', data);
-    };
-    AudioPlayer.setProgressSubscription();
-  };
-
-  start = () => {
-    console.log('start record');
-    this.setState({ audioFile: '', recording: true, loaded: false });
-    AudioRecord.start();
-  };
-
-  stop = async () => {
-    if (!this.state.recording) return;
-    console.log('stop record');
-    let audioFile = await AudioRecord.stop();
-    console.log('audioFile', audioFile);
-    this.setState({ audioFile, recording: false });
-  };
-
-  play = () => {
-    if (this.state.loaded) {
-      AudioPlayer.unpause();
-      this.setState({ paused: false });
-    } else {
-      AudioPlayer.play(this.state.audioFile);
-      this.setState({ paused: false, loaded: true });
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      camera_mode: false,
+      create_account_screen: false
     }
-  };
-
-  pause = () => {
-    AudioPlayer.pause();
-    this.setState({ paused: true });
-  };
-
+  }
   render() {
-    const { recording, paused, audioFile } = this.state;
     return (
-      <View style={styles.container}>
-        <View style={styles.row}>
-          <Button onPress={this.start} title="Record" disabled={recording} />
-          <Button onPress={this.stop} title="Stop" disabled={!recording} />
-          {paused ? (
-            <Button onPress={this.play} title="Play" disabled={!audioFile} />
-          ) : (
-            <Button onPress={this.pause} title="Pause" disabled={!audioFile} />
-          )}
-        </View>
-      </View>
+      this.state.camera_mode ?
+        <CameraScreen back={() => this.setState({ camera_mode: false })} /> :
+        this.state.create_account_screen ?
+
+          <CreateAccount back={() => this.setState({ create_account_screen: false })} />
+          :
+
+          <View style={styles.container}>
+            <Button title="Open Camera" onPress={() => this.setState({ camera_mode: true })} />
+            <Button title="Create Account" onPress={() => this.setState({ create_account_screen: true })} />
+            <Text>Open up App.js to start working on your app!</Text>
+          </View>
+
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -119,3 +42,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly'
   }
 });
+
+export default App;
