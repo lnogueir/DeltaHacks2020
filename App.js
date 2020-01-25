@@ -1,6 +1,7 @@
 import React from 'react';
 import CameraScreen from './components/CameraScreen';
-import CreateAccount from './components/CreateAccount.js'
+import CreateAccount from './components/CreateAccount'
+// import AudioRecord from './components/AudioRecord'
 import { StyleSheet, Text, View, Button } from 'react-native';
 
 
@@ -24,7 +25,9 @@ class App extends React.Component {
           <View style={styles.container}>
             <Button title="Open Camera" onPress={() => this.setState({ camera_mode: true })} />
             <Button title="Create Account" onPress={() => this.setState({ create_account_screen: true })} />
-            <Text>Open up App.js to start working on your app!</Text>
+            {/* <View style={{ marginTop: 20 }}>
+              <AudioRecord />
+            </View> */}
           </View>
 
     );
