@@ -5,7 +5,7 @@ import { PermissionsAndroid } from 'react-native';
 import { AudioPlayer } from 'react-native-audio-player-recorder';
 import AudioRecord from 'react-native-audio-record';
 
-export default class App extends Component {
+export default class AudioRecording extends Component {
   sound = null;
   state = {
     audioFile: '',
