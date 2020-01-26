@@ -41,7 +41,6 @@ class CameraScreen extends React.Component {
     componentDidMount = async () => {
         const { status } = await Camera.requestPermissionsAsync();
         this.setState({ hasPermission: status === 'granted' });
-
     }
 
     render() {
@@ -53,7 +52,7 @@ class CameraScreen extends React.Component {
         }
         return (
             <View style={{ flex: 1 }}>
-                <BackRow back={this.props.back} />
+                <BackRow back={() => this.props.updateScreenIndex(0)} />
                 <Camera style={{ flex: 1 }} type={this.state.type} ref={ref => this.camera = ref}>
                     <View
                         style={{

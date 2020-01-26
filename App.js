@@ -1,49 +1,45 @@
 import React from 'react';
 import CameraScreen from './components/CameraScreen';
-import CreateAccount from './components/CreateAccount'
-// import AudioRecord from './components/AudioRecord'
-import { StyleSheet, Text, View, Button } from 'react-native';
+import CreateAccount from './components/CreateAccount';
+import LoginPage from './components/LoginPage';
+import Home from './components/Home';
+import { AsyncStorage, View } from 'react-native';
 
+
+const SCREENS_MAP = [
+  Home, CameraScreen, CreateAccount, LoginPage
+]
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      camera_mode: false,
-      create_account_screen: false
+      screen_index: 0,
+      isLoading: true,
+      user: null
     }
   }
+
+  updateScreenIndex = index => {
+    this.setState({ screen_index: index })
+  }
+
+  componentDidMount = async () => {
+    await AsyncStorage.getItem('user').then(data => {
+      this.setState({
+        screen_index: data != null ? 0 : 3,
+        user: data,
+        isLoading: false,
+      })
+    });
+  }
+
   render() {
+    const CurrentScreen = this.state.isLoading ? View : SCREENS_MAP[this.state.screen_index]
     return (
-      this.state.camera_mode ?
-        <CameraScreen back={() => this.setState({ camera_mode: false })} /> :
-        this.state.create_account_screen ?
-
-          <CreateAccount back={() => this.setState({ create_account_screen: false })} />
-          :
-
-          <View style={styles.container}>
-            <Button title="Open Camera" onPress={() => this.setState({ camera_mode: true })} />
-            <Button title="Create Account" onPress={() => this.setState({ create_account_screen: true })} />
-            {/* <View style={{ marginTop: 20 }}>
-              <AudioRecord />
-            </View> */}
-          </View>
-
+      <CurrentScreen updateScreenIndex={this.updateScreenIndex} />
     );
   }
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly'
-  }
-});
 
 export default App;

@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import { Text, View, Dimensions } from 'react-native';
-import { StyleSheet, Image, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
+import {
+    AsyncStorage,
+    StyleSheet,
+    Image,
+    ImageBackground,
+    TextInput,
+    TouchableOpacity
+}
+    from 'react-native';
 import imgB from '../assets/sampleBackground1.jpg';
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -17,6 +25,12 @@ export default class LoginPage extends Component {
         };
     }
 
+    storeUser = user => {
+        AsyncStorage.setItem('user', JSON.stringify(user)).then(() => {
+            this.props.updateScreenIndex(0)
+        })
+    }
+
     showPass = () => {
         this.setState({
             showPass: this.state.press,
@@ -24,12 +38,12 @@ export default class LoginPage extends Component {
         })
     }
 
-    onCreateAccount = () => {
+    onLogin = () => {
         let userData = {
             email: this.state.username,
             password: this.state.password
         }
-        fetch('http://172.17.72.207:3000/api/site_users', {
+        fetch('http://172.17.72.207:3000/api/site_users/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -38,8 +52,9 @@ export default class LoginPage extends Component {
             body: JSON.stringify(userData)
         }).then(response => {
             if (response.status == 200) {
-                alert('Account Created Successfully!')
-                this.props.updateScreenIndex(3)
+                response.json().then(user_data => {
+                    this.storeUser(user_data)
+                })
             }
         })
 
@@ -50,9 +65,10 @@ export default class LoginPage extends Component {
             <ImageBackground style={styles.backgroundContainer} source={imgB}>
                 <View style={styles.mainContainer}>
                     <View style={styles.logoContainer}>
+
                         <Image source={{ uri: 'https://i.pinimg.com/originals/58/2e/65/582e6581f45ccac1dcc7cf271e4e88ec.png' }} style={styles.logo} />
                     </View>
-                    <Text style={styles.name}>Create Account</Text>
+                    <Text style={styles.name}>bWell</Text>
                     <View style={styles.inputContainer}>
                         <Icon name={'ios-person'} size={28} color={'rgba(255, 255, 255, 1)'}
                             style={styles.inputIcon}
@@ -80,12 +96,11 @@ export default class LoginPage extends Component {
                             <Icon name={this.state.press == false ? 'ios-eye-off' : 'ios-eye'} size={26} color={'rgba(255, 255, 255, 1)'} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={this.onCreateAccount} style={styles.buttonLogin}>
-                            <Text style={styles.text}>Sign Up</Text>
+                        <TouchableOpacity onPress={this.onLogin} style={styles.buttonLogin}>
+                            <Text style={styles.text}>Log In</Text>
                         </TouchableOpacity>
-                        <Text style={styles.haveaccount}>Have an account?</Text>
-                        <TouchableOpacity onPress={() => this.props.updateScreenIndex(3)} style={styles.buttonCreateAccount}>
-                            <Text style={styles.textCreateAccount}>Sign In</Text>
+                        <TouchableOpacity onPress={() => this.props.updateScreenIndex(2)} style={styles.buttonCreateAccount}>
+                            <Text style={styles.textCreateAccount}>Create an Account</Text>
                         </TouchableOpacity>
 
                     </View>
@@ -194,14 +209,5 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "400",
     },
-    haveaccount: {
-        marginTop: 25,
-        marginBottom: 15,
-        justifyContent: 'center',
-        textAlign: "center",
-        fontWeight: "900",
-        fontSize: 18,
-        color: 'white'
-    }
 
 })
