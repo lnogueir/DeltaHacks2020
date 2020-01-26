@@ -17,7 +17,7 @@ return(
 <View style={styles.mainContainer}>
 
     
-    <Text style={styles.name}>Welcome</Text>
+    <Text style={styles.name}></Text>
     <Text style = {styles.aboutText}>username
     </Text>
 
@@ -38,11 +38,6 @@ return(
 
     <RowItem/>
     <RowItem/>
-    <RowItem/>
-    <RowItem/>
-    <RowItem/>
-    <RowItem/>
-
     
 
       </View>

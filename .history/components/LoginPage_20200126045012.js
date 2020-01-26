@@ -3,7 +3,7 @@ import { Text, View, Dimensions, Animated } from 'react-native';
 import {Platform, StyleSheet,Image, ImageBackground, TextInput, TouchableOpacity} from 'react-native';
 import imgB from '../assets/sampleBackground1.jpg';
 import { withOrientation } from 'react-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons'
 import { ScrollView } from 'react-native-gesture-handler';
 
 const FadeInView = (props) => {

@@ -1,38 +1,11 @@
 import React, { useState, useEffect, Component } from 'react';
-import { Text, View, Dimensions, Animated } from 'react-native';
+import { Text, View } from 'react-native';
 import {Platform, StyleSheet,Image, ImageBackground, TextInput, TouchableOpacity} from 'react-native';
 import imgB from '../assets/sampleBackground1.jpg';
 import { withOrientation } from 'react-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { ScrollView } from 'react-native-gesture-handler';
 
-const FadeInView = (props) => {
-  const [fadeAnim] = useState(new Animated.Value(0))  // Initial value for opacity: 0
 
-  React.useEffect(() => {
-    Animated.timing(
-      fadeAnim,
-      {
-        toValue: 1,
-        duration: 1500,
-      }
-    ).start();
-  }, [])
-
-  return (
-    <Animated.View                 // Special animatable View
-      style={{
-        ...props.style,
-        opacity: fadeAnim,         // Bind opacity to animated value
-      }}
-    >
-      {props.children}
-    </Animated.View>
-  );
-}
-
-const {width: WIDTH} = Dimensions.get('window')
-export default class LoginPage extends Component {
+export default class LandingPage extends Component {
     constructor(props) {
         super(props);
         
@@ -44,20 +17,6 @@ export default class LoginPage extends Component {
         };
       }
 
-     showPass = () => {
-       if (this.state.press == false){
-         this.setState({showPass: false, press: true})
-       }
-       else {
-        this.setState({showPass: true, press: false})
-      }
-     }
-
-      onLogin() {
-        const { username, password } = this.state;
-    
-        Alert.alert('Credentials', `${username} + ${password}`);
-      }
 
   render(){
 return(
@@ -73,26 +32,12 @@ return(
     <Icon name={'ios-person'} size={28} color={'rgba(255, 255, 255, 1)'}
     style={styles.inputIcon}
     />
-        <TextInput style={styles.input} placeholder={'Username'} placeholderTextColor={'rgba(255, 255, 255, 1)' 
-        }/>
-        
     </View>
 
     <View>
     <Icon name={'ios-lock'} size={28} color={'rgba(255, 255, 255, 1)'}
     style={styles.inputIcon}
     />
-        <TextInput style={styles.input} placeholder={'Password'} secureTextEntry = {this.state.showPass} placeholderTextColor={'rgba(255, 255, 255, 1)' 
-        }/>
-
-<TouchableOpacity style={styles.buttonEye} onPress = {this.showPass.bind(this)}>
-  <Icon name={this.state.press == false ? 'ios-eye-off' : 'ios-eye'} size={26} color={'rgba(255, 255, 255, 1)'}/>
-</TouchableOpacity>
-
-<TouchableOpacity style={styles.buttonLogin}>
-  <Text style={styles.text}>Log In</Text>
-</TouchableOpacity>
-
     </View>
 
     </FadeInView>

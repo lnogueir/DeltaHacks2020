@@ -86,12 +86,6 @@ const styles = StyleSheet.create({
       displayIndex: {
         display: "flex",
         flexDirection: "column",
-        marginRight: 20,
-      },
-      displayDots :{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between"
       },
       text2:{
         fontSize: 16,
@@ -110,7 +104,7 @@ const styles = StyleSheet.create({
       backgroundColor: 'yellow',
       borderRadius: 5,
     },
-    green: {
+    red: {
       width: 10,
       height: 10,
       backgroundColor: 'green',

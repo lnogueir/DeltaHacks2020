@@ -38,11 +38,6 @@ return(
 
     <RowItem/>
     <RowItem/>
-    <RowItem/>
-    <RowItem/>
-    <RowItem/>
-    <RowItem/>
-
     
 
       </View>

@@ -32,17 +32,12 @@ return(
     onPress = {() =><RowItem></RowItem>}
     />
     
-    <Text style = {styles.buttonText}>Add your meal</Text>
+    <Text style = {styles.buttonText}>Add your</Text>
     </View>
 
 
     <RowItem/>
     <RowItem/>
-    <RowItem/>
-    <RowItem/>
-    <RowItem/>
-    <RowItem/>
-
     
 
       </View>

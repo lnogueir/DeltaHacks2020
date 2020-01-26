@@ -86,12 +86,10 @@ const styles = StyleSheet.create({
       displayIndex: {
         display: "flex",
         flexDirection: "column",
-        marginRight: 20,
       },
       displayDots :{
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between"
       },
       text2:{
         fontSize: 16,

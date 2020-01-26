@@ -10,12 +10,11 @@ import AboutUs from './components/AboutUs';
 import TrackPage from './components/TaskPage';
 import InfoDisplay from './components/InfoDisplay';
 import TaskPage from './components/TaskPage';
-import LandingPage from './components/LandingPage';
 
 class Login extends Component {
   render(){
 return(
-<LandingPage></LandingPage>
+<LoginPage></LoginPage>
 )
   }
 }

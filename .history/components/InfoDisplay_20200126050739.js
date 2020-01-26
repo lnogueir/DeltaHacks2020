@@ -7,7 +7,9 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import RowItem from './RowItem';
 
 const {width: WIDTH} = Dimensions.get('window')
-export default class TaskPage extends Component {
+export default class InfoDisplay extends Component {
+
+    
   render(){
 return(
 
@@ -25,24 +27,16 @@ return(
       <ScrollView style={styles.scrollView}>
       <View style={{flex: 1, flexDirection: 'column'}}>
       <View style={styles.row}>
-    <Icon
-    style = {styles.icon}
-    name = 'pluscircle'
-    size = {30}
-    onPress = {() =><RowItem></RowItem>}
-    />
-    
-    <Text style = {styles.buttonText}>Add your meal</Text>
+        <Text style={styles.text}>Meal X</Text>
+
+        <View style = {styles.displayIndex}>
+        <Text style={styles.text2}>GLindex: 99</Text>
+        <Text style={styles.text2}>GLindex: 80</Text>
+        </View>
     </View>
 
-
     <RowItem/>
     <RowItem/>
-    <RowItem/>
-    <RowItem/>
-    <RowItem/>
-    <RowItem/>
-
     
 
       </View>
@@ -126,6 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  
 
 
 })

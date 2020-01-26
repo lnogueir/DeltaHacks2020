@@ -42,7 +42,6 @@ return(
     <RowItem/>
     <RowItem/>
     <RowItem/>
-
     
 
       </View>

@@ -34,24 +34,15 @@ return(
 
         <View style={styles.row}>
            <Icon
-         style = {{marginLeft: 10}}
+         style = {styles.icon}
          name = 'minus-circle-outline'
         size = {30}/>
         <Text style={styles.text}>Meal X</Text>
 
-        <View style = {styles.rightContent}>
         <View style = {styles.displayIndex}>
-        <Text style={styles.text2} onChangeText={this.state.GLindex}>GLindex: 20</Text>
-        <Text style={styles.text2}>GLvalue: 80</Text>
+        <Text style={styles.text2} onChangeText={this.state.GLindex}>GLindex: 99</Text>
+        <Text style={styles.text2}>GLindex: 80</Text>
         </View>
-
-        <View style = {styles.displayDots}>
-        <View style = {styles.red}></View>
-        <View style = {styles.yellow}></View>
-        <View style = {styles.green}></View>
-        </View>
-        </View>
-
         </View>
 
     )
@@ -79,41 +70,13 @@ const styles = StyleSheet.create({
     fontWeight: '200',
       marginLeft: 10, 
       },
-      rightContent: {
-        display: "flex",
-        flexDirection: 'row',
-      },
       displayIndex: {
         display: "flex",
         flexDirection: "column",
-        marginRight: 20,
-      },
-      displayDots :{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between"
       },
       text2:{
         fontSize: 16,
         fontWeight: '200',
-        marginLeft: 75,
-    },
-    red: {
-      width: 10,
-      height: 10,
-      backgroundColor: 'red',
-      borderRadius: 5,
-    },
-    yellow: {
-      width: 10,
-      height: 10,
-      backgroundColor: 'yellow',
-      borderRadius: 5,
-    },
-    green: {
-      width: 10,
-      height: 10,
-      backgroundColor: 'green',
-      borderRadius: 5,
+        marginLeft: 148,
     },
 })

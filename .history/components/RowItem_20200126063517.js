@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
       displayIndex: {
         display: "flex",
         flexDirection: "column",
-        marginRight: 20,
       },
       displayDots :{
         display: "flex",
@@ -96,7 +95,7 @@ const styles = StyleSheet.create({
       text2:{
         fontSize: 16,
         fontWeight: '200',
-        marginLeft: 75,
+        marginLeft: 60,
     },
     red: {
       width: 10,

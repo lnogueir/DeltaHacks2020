@@ -45,13 +45,11 @@ return(
         <Text style={styles.text2}>GLvalue: 80</Text>
         </View>
 
-        <View style = {styles.displayDots}>
         <View style = {styles.red}></View>
         <View style = {styles.yellow}></View>
         <View style = {styles.green}></View>
-        </View>
-        </View>
 
+        </View>
         </View>
 
     )
@@ -79,19 +77,9 @@ const styles = StyleSheet.create({
     fontWeight: '200',
       marginLeft: 10, 
       },
-      rightContent: {
-        display: "flex",
-        flexDirection: 'row',
-      },
       displayIndex: {
         display: "flex",
         flexDirection: "column",
-        marginRight: 20,
-      },
-      displayDots :{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between"
       },
       text2:{
         fontSize: 16,
@@ -102,18 +90,5 @@ const styles = StyleSheet.create({
       width: 10,
       height: 10,
       backgroundColor: 'red',
-      borderRadius: 5,
-    },
-    yellow: {
-      width: 10,
-      height: 10,
-      backgroundColor: 'yellow',
-      borderRadius: 5,
-    },
-    green: {
-      width: 10,
-      height: 10,
-      backgroundColor: 'green',
-      borderRadius: 5,
-    },
+    }
 })

@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
       displayIndex: {
         display: "flex",
         flexDirection: "column",
-        marginRight: 20,
       },
       displayDots :{
         display: "flex",

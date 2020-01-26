@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import RowItem from './RowItem';
 
 const {width: WIDTH} = Dimensions.get('window')
-export default class TaskPage extends Component {
+export default class InfoDisplay extends Component {
   render(){
 return(
 
@@ -38,11 +38,6 @@ return(
 
     <RowItem/>
     <RowItem/>
-    <RowItem/>
-    <RowItem/>
-    <RowItem/>
-    <RowItem/>
-
     
 
       </View>

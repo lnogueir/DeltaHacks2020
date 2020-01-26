@@ -22,7 +22,7 @@ return(
     </Text>
 
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView} pagingEnabled={false} bounces={true}>
       <View style={{flex: 1, flexDirection: 'column'}}>
       <View style={styles.row}>
     <Icon
@@ -42,7 +42,6 @@ return(
     <RowItem/>
     <RowItem/>
     <RowItem/>
-
     
 
       </View>
