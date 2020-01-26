@@ -5,13 +5,14 @@ import imgB from '../assets/sampleBackground1.jpg';
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const { width: WIDTH } = Dimensions.get('window')
-export default class LoginPage extends Component {
+export default class CreateAccount extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             username: '',
             password: '',
+            name: '',
             showPass: true,
             press: false,
         };
@@ -38,8 +39,24 @@ export default class LoginPage extends Component {
             body: JSON.stringify(userData)
         }).then(response => {
             if (response.status == 200) {
-                alert('Account Created Successfully!')
-                this.props.updateScreenIndex(3)
+                response.json().then(response => {
+                    let userDataProfile = {
+                        name: this.state.name
+                    }
+                    fetch(`http://172.17.72.207:3000/api/site_users/${response.id}/profiles`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(userDataProfile)
+                    }).then(response => {
+                        if (response.status === 200) {
+                            alert('Account Created Successfully!')
+                            this.props.updateScreenIndex(3)
+                        }
+                    })
+                })
             }
         })
 
@@ -59,7 +76,18 @@ export default class LoginPage extends Component {
                         />
                         <TextInput
                             style={styles.input}
-                            placeholder={'Username'}
+                            placeholder={'Name'}
+                            placeholderTextColor={'rgba(255, 255, 255, 1)'}
+                            onChangeText={text => this.setState({ name: text })}
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Icon name={'ios-person'} size={28} color={'rgba(255, 255, 255, 1)'}
+                            style={styles.inputIcon}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder={'Email'}
                             placeholderTextColor={'rgba(255, 255, 255, 1)'}
                             onChangeText={text => this.setState({ username: text })}
                         />

@@ -16,7 +16,6 @@ const { width: WIDTH } = Dimensions.get('window')
 export default class LoginPage extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             username: '',
             password: '',
@@ -27,6 +26,7 @@ export default class LoginPage extends Component {
 
     storeUser = user => {
         AsyncStorage.setItem('user', JSON.stringify(user)).then(() => {
+            this.props.updateUser(user)
             this.props.updateScreenIndex(0)
         })
     }
@@ -53,8 +53,20 @@ export default class LoginPage extends Component {
         }).then(response => {
             if (response.status == 200) {
                 response.json().then(user_data => {
-                    this.storeUser(user_data)
+                    fetch(`http://172.17.72.207:3000/api/site_users/${user_data.userId}/profiles`)
+                        .then(response => {
+                            if (response.status === 200) {
+                                response.json().then(response => {
+                                    user_data.profileId = response.id
+                                    user_data.name = response.name
+                                    this.storeUser(user_data)
+                                })
+                            }
+                        })
+
                 })
+            } else {
+                alert('Invalid credentials')
             }
         })
 
@@ -75,7 +87,7 @@ export default class LoginPage extends Component {
                         />
                         <TextInput
                             style={styles.input}
-                            placeholder={'Username'}
+                            placeholder={'Email'}
                             placeholderTextColor={'rgba(255, 255, 255, 1)'}
                             onChangeText={text => this.setState({ username: text })}
                         />

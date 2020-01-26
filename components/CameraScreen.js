@@ -1,7 +1,11 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
-import BackRow from './BackRow'
+import BackRow from './BackRow';
+import CheckImage from './CheckImage';
+import { Button } from 'react-native-elements';
+import AntIcon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 class CameraScreen extends React.Component {
     constructor(props) {
         super(props)
@@ -9,7 +13,10 @@ class CameraScreen extends React.Component {
             hasPermission: null,
             type: Camera.Constants.Type.back,
             photo64: null,
-            photo: null
+            photo: null,
+            is_loading: false,
+            is_check: false,
+            image_data: null
         }
     }
 
@@ -26,11 +33,13 @@ class CameraScreen extends React.Component {
                         },
                         body: JSON.stringify({ base64: data.base64 })
                     }
+                    this.setState({ is_loading: true })
                     fetch('http://172.17.72.207:3000/api/site_users/2/getFood', image_data)
                         .then(response => {
                             if (response.status === 200) {
-
-                                response.json().then(response => console.log(response))
+                                response.json().then(response => {
+                                    this.setState({ is_loading: false, photo: data.uri, image_data: response.result })
+                                })
                             }
                         })
                         .catch(err => console.log(err))
@@ -43,16 +52,37 @@ class CameraScreen extends React.Component {
         this.setState({ hasPermission: status === 'granted' });
     }
 
+    updatePhoto = photo => {
+        this.setState({ photo: photo })
+    }
+
     render() {
+        if (this.state.is_loading) {
+            return (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Button type='clear' title='will load' loading={true} />
+                </View>
+            )
+        }
         if (this.state.hasPermission === null) {
             return <View />;
         }
         if (this.state.hasPermission === false) {
             return <Text>No access to camera</Text>;
         }
+        if (this.state.photo) {
+            return (
+                <CheckImage
+                    updatePhoto={this.updatePhoto}
+                    updateScreenIndex={this.props.updateScreenIndex}
+                    photo_uri={this.state.photo}
+                    image_data={this.state.image_data}
+                />
+            )
+        }
         return (
             <View style={{ flex: 1 }}>
-                <BackRow back={() => this.props.updateScreenIndex(0)} />
+                <BackRow back={() => this.props.updateScreenIndex(5)} />
                 <Camera style={{ flex: 1 }} type={this.state.type} ref={ref => this.camera = ref}>
                     <View
                         style={{
@@ -71,10 +101,10 @@ class CameraScreen extends React.Component {
                                         : Camera.Constants.Type.back)
                                 });
                             }}>
-                            <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
+                            <AntIcon style={{ position: 'relative', left: 10 }} name="retweet" size={40} color={'white'} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.snap}>
-                            <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Snap! </Text>
+                            <Icon style={{ position: 'relative', left: 15 }} name={'camera'} size={40} color={'white'} />
                         </TouchableOpacity>
                     </View>
                 </Camera>

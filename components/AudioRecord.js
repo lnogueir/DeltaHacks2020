@@ -1,9 +1,11 @@
 import React from 'react'
-import { Text, View, Button } from 'react-native';
+import { StyleSheet, Text, Button, View } from 'react-native';
 import { Audio } from 'expo-av';
 import * as Permissions from 'expo-permissions';
-import base64 from 'base64-js'
 import * as FileSystem from 'expo-file-system';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Overlay } from 'react-native-elements';
+import { Button as LoadingButton } from 'react-native-elements';
 
 
 class AudioRecord extends React.Component {
@@ -11,10 +13,21 @@ class AudioRecord extends React.Component {
     super(props)
     this.recording = null;
     this.song_uri = null;
+    this.meal = null;
     this.state = {
-      hasPermission: null
+      is_recording: false,
+      hasPermission: null,
+      isVisible: false,
+      mealName: '',
+      gL: '',
+      calories: '',
+      is_loading: false,
     }
+  }
 
+  storeMealLocally = async () => {
+    this.props.updateCurrentMeal(this.meal)
+    this.setState({ isVisible: false })
   }
 
   componentDidMount = async () => {
@@ -29,9 +42,10 @@ class AudioRecord extends React.Component {
 
   stopAudio = () => {
     if (this.recording) {
+      this.setState({ is_loading: true })
       this.recording.stopAndUnloadAsync().then(async status => {
+        this.setState({ is_recording: false })
         let song_uri = this.recording.getURI()
-        console.log(song_uri)
         const base64_audio = await FileSystem.readAsStringAsync(song_uri, { encoding: FileSystem.EncodingType.Base64 })
         let audio_data = {
           method: 'POST',
@@ -45,7 +59,18 @@ class AudioRecord extends React.Component {
         fetch('http://172.17.72.207:3000/api/site_users/2/getFoodAudio', audio_data)
           .then(response => {
             if (response.status === 200) {
-              response.json().then(response => console.log(response))
+              response.json().then(response => {
+                this.meal = response.result
+                this.setState({
+                  isVisible: true,
+                  gL: response.result.gL,
+                  mealName: response.result.mealName,
+                  calories: `${response.result.totalCalories}kcal`,
+                  is_loading: false
+                })
+              })
+            } else {
+              alert('Low quality audio, please try again')
             }
           })
           .catch(err => console.log(err))
@@ -58,7 +83,7 @@ class AudioRecord extends React.Component {
     try {
       this.recording.prepareToRecordAsync().then(status => {
         this.recording.startAsync().then(status => {
-
+          this.setState({ is_recording: true })
         })
       })
     } catch (error) {
@@ -68,13 +93,57 @@ class AudioRecord extends React.Component {
 
   render() {
     return (
-      <View>
-        <Button title="Record Audio" onPress={this.createAudio} />
-        <Button title="Stop Audio" onPress={this.stopAudio} />
-      </View>
+      <>
+        <Overlay isVisible={this.state.isVisible}>
+          <View style={styles.overlay}>
+            <Text style={{ textAlign: 'center', fontWeight: '300', fontSize: 20, marginBottom: 40 }}>Below is the info from your record:</Text>
+            <View style={styles.dynamicText}>
+              <Text style={{ textAlign: 'left', fontWeight: '600', fontSize: 17, marginBottom: 30 }}>
+                Recipe: {this.state.mealName}
+              </Text>
+              <Text style={{ textAlign: 'left', fontWeight: '600', fontSize: 17, marginBottom: 30 }}>
+                Glycemic Load: {this.state.gL}
+              </Text>
+              <Text style={{ textAlign: 'left', fontWeight: '600', fontSize: 17, marginBottom: 30 }}>
+                Calories: {this.state.calories}
+              </Text>
+            </View>
+            <Text style={{ textAlign: 'center', fontWeight: '300', fontSize: 18, marginBottom: 40 }}>You can overwrite record by making another audio.</Text>
+            <Button onPress={this.storeMealLocally} title="Got it" style={styles} />
+          </View>
+        </Overlay>
+        {
+          this.state.is_loading ?
+            <LoadingButton type='clear' title='will load' loading={true} />
+            :
+            <Icon
+              onPress={this.state.is_recording ? this.stopAudio : this.createAudio}
+              name={this.state.is_recording ? 'square' : 'microphone'}
+              size={40}
+              color={this.state.is_recording ? 'red' : 'white'}
+              style={styles.addmethodIcon}
+            />
+        }
+      </>
     )
   }
 
 }
+
+const styles = StyleSheet.create({
+  addmethodIcon: {
+    position: 'relative',
+    top: -5,
+    left: -30,
+    shadowOffset: { width: 2, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+  },
+  overlay: {
+    margin: 25,
+    borderRadius: 20,
+  },
+
+})
 
 export default AudioRecord;
