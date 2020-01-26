@@ -1,88 +1,88 @@
 import React, { Component } from 'react';
-import { Text, View, Dimensions } from 'react-native';
-import { StyleSheet,Button, ImageBackground, TextInput, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { Text, View } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 
-const {width: WIDTH} = Dimensions.get('window')
-export default class UserInputs extends Component {
-    render(){
-        return(
-            <ImageBackground source= {require('../../img/sampleBackground1.jpg')}style={styles.backgroundContainer}>
-            
-         <Text style={styles.header}>Your Information</Text>
-         
-         <View>
-       <Icon 
-       name = 'pluscircle'
-       size = {30}
-       onPress={() => }
-       />
-        </View>
+
+export default class RowItem extends Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+          GLindex: '',
+          GLvalue: '',
+          meal: '',
+          loading: false
+        };
+    }
+
+  gettingData = (GLindex, GLvalue, meal) => {
+  const data = 
+  {
+      GLindex: GLindex,
+      GLvalue: GLvalue,
+      meal:meal
+  }
+
+
+
+  }
+
         
 
-        <TouchableOpacity style={styles.buttonLogin}>
-          <Text style={styles.text}>Submit</Text>
-           </TouchableOpacity>
-        </ImageBackground>
-        )
+  render(){
+    if (this.state.GLindex>=18){
+            
     }
+return(
+
+        <View style={styles.row}>
+        <Text style={styles.text}>Meal X</Text>
+
+        <View style = {styles.displayIndex}>
+        <Text style={styles.text2}>GLindex: 99</Text>
+        <Text style={styles.text2}>GLindex: 80</Text>
+        {!this.state.loading ?
+            <Text onPress={this.gettingData}>Submit</Text>
+            :
+            <Loading size={'large'} />
+        }
+        </View>
+        </View>
+       
+
+    )
+  }
 }
 
-
-
 const styles = StyleSheet.create({
+    row: {
+        marginTop: 30,
+        borderRadius: 15,
+        width: 300, 
+        height: 100,
+        backgroundColor: 'white',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: "center",
 
-    header:
-    {
-color:'white',
-fontSize: 26,
-textAlign: 'center',
-fontWeight: "300",
-marginBottom: 30,
-    },
-  
-      input: {
-          width: WIDTH - 175, 
-        height: 45, 
-        borderRadius: 25,
-        fontSize: 16, 
-        fontWeight: "200",
-        paddingLeft: 20,
-        backgroundColor: 'rgba(0, 0, 0, .35)',
-        color: 'rgba(255, 255, 255, 1)', 
-        marginHorizontal: 25,
-        marginTop: 10,
-        marginBottom: 10,
-      },
-      backgroundContainer: {
-        flex: 1,
-        resizeMode: 'cover', // or 'stretch'
-        width: null,
-        height: null,
-        //optional
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-     buttonLogin:{
-           justifyContent: 'center',
-           marginTop: 40,
-           width: WIDTH - 300, 
-           height: 45, 
-           borderRadius: 25,
-           fontSize: 18, 
-           paddingLeft: 4,
-           backgroundColor: 'rgba(0, 0, 0, .3)',
-           color: 'rgba(255, 255, 255, 1)', 
-           marginHorizontal: 25,
-           textAlign: "center",
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 7 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,  
       },
       text:{
-        color: 'rgba(255, 255, 255, 1)',
-        textAlign: "center",
-        fontSize: 15,
-        fontWeight: "200",
-      }
-
+          fontSize: 16,
+    fontWeight: '200',
+      marginLeft: 10, 
+      },
+      displayIndex: {
+        display: "flex",
+        flexDirection: "column",
+      },
+      text2:{
+        fontSize: 16,
+        fontWeight: '200',
+        marginLeft: 148,
+    },
 })
-
